@@ -2,20 +2,9 @@ GOCMD=go
 GOTEST=$(GOCMD) test
 GOVET=$(GOCMD) vet
 BINARY_NAME=local-ai
-
-GOLLAMA_VERSION?=ccf23adfb278c0165d388389a5d60f3fe38e4854
-GPT4ALL_REPO?=https://github.com/nomic-ai/gpt4all
-GPT4ALL_VERSION?=914519e772fd78c15691dcd0b8bac60d6af514ec
-GOGPT2_VERSION?=7bff56f0224502c1c9ed6258d2a17e8084628827
-RWKV_REPO?=https://github.com/donomii/go-rwkv.cpp
-RWKV_VERSION?=07166da10cb2a9e8854395a4f210464dcea76e47
-WHISPER_CPP_VERSION?=041be06d5881d3c759cc4ed45d655804361237cd
-BERT_VERSION?=cea1ed76a7f48ef386a8e369f6c82c48cdf2d551
-BLOOMZ_VERSION?=e9366e82abdfe70565644fbfae9651976714efd1
 BUILD_TYPE?=
 CGO_LDFLAGS?=
 CUDA_LIBPATH?=/usr/local/cuda/lib64/
-STABLEDIFFUSION_VERSION?=c0748eca3642d58bcf9521108bcee46959c647dc
 GO_TAGS?=
 
 OPTIONAL_TARGETS?=
@@ -48,8 +37,7 @@ all: help
 
 ## GPT4ALL
 gpt4all:
-	git clone --recurse-submodules $(GPT4ALL_REPO) gpt4all
-	cd gpt4all && git checkout -b build $(GPT4ALL_VERSION) && git submodule update --init --recursive --depth 1
+	cd gpt4all
 	# This is hackish, but needed as both go-llama and go-gpt4allj have their own version of ggml..
 	@find ./gpt4all -type f -name "*.c" -exec sed -i'' -e 's/ggml_/ggml_gptj_/g' {} +
 	@find ./gpt4all -type f -name "*.cpp" -exec sed -i'' -e 's/ggml_/ggml_gptj_/g' {} +
@@ -70,24 +58,21 @@ gpt4all:
 
 ## BERT embeddings
 go-bert:
-	git clone --recurse-submodules https://github.com/go-skynet/go-bert.cpp go-bert
-	cd go-bert && git checkout -b build $(BERT_VERSION) && git submodule update --init --recursive --depth 1
+	cd go-bert
 	@find ./go-bert -type f -name "*.c" -exec sed -i'' -e 's/ggml_/ggml_bert_/g' {} +
 	@find ./go-bert -type f -name "*.cpp" -exec sed -i'' -e 's/ggml_/ggml_bert_/g' {} +
 	@find ./go-bert -type f -name "*.h" -exec sed -i'' -e 's/ggml_/ggml_bert_/g' {} +
 
 ## stable diffusion
 go-stable-diffusion:
-	git clone --recurse-submodules https://github.com/mudler/go-stable-diffusion go-stable-diffusion
-	cd go-stable-diffusion && git checkout -b build $(STABLEDIFFUSION_VERSION) && git submodule update --init --recursive --depth 1
+	cd go-stable-diffusion
 
 go-stable-diffusion/libstablediffusion.a:
 	$(MAKE) -C go-stable-diffusion libstablediffusion.a
 
 ## RWKV
 go-rwkv:
-	git clone --recurse-submodules $(RWKV_REPO) go-rwkv
-	cd go-rwkv && git checkout -b build $(RWKV_VERSION) && git submodule update --init --recursive --depth 1
+	cd go-rwkv
 	@find ./go-rwkv -type f -name "*.c" -exec sed -i'' -e 's/ggml_/ggml_rwkv_/g' {} +
 	@find ./go-rwkv -type f -name "*.cpp" -exec sed -i'' -e 's/ggml_/ggml_rwkv_/g' {} +
 	@find ./go-rwkv -type f -name "*.h" -exec sed -i'' -e 's/ggml_/ggml_rwkv_/g' {} +
@@ -97,7 +82,6 @@ go-rwkv/librwkv.a: go-rwkv
 
 ## bloomz
 bloomz:
-	git clone --recurse-submodules https://github.com/go-skynet/bloomz.cpp bloomz
 	@find ./bloomz -type f -name "*.c" -exec sed -i'' -e 's/ggml_/ggml_bloomz_/g' {} +
 	@find ./bloomz -type f -name "*.cpp" -exec sed -i'' -e 's/ggml_/ggml_bloomz_/g' {} +
 	@find ./bloomz -type f -name "*.h" -exec sed -i'' -e 's/ggml_/ggml_bloomz_/g' {} +
@@ -115,8 +99,7 @@ gpt4all/gpt4all-bindings/golang/libgpt4all.a: gpt4all
 
 ## CEREBRAS GPT
 go-gpt2: 
-	git clone --recurse-submodules https://github.com/go-skynet/go-gpt2.cpp go-gpt2
-	cd go-gpt2 && git checkout -b build $(GOGPT2_VERSION) && git submodule update --init --recursive --depth 1
+	cd go-gpt2
 	# This is hackish, but needed as both go-llama and go-gpt4allj have their own version of ggml..
 	@find ./go-gpt2 -type f -name "*.c" -exec sed -i'' -e 's/ggml_/ggml_gpt2_/g' {} +
 	@find ./go-gpt2 -type f -name "*.cpp" -exec sed -i'' -e 's/ggml_/ggml_gpt2_/g' {} +
@@ -133,8 +116,7 @@ go-gpt2/libgpt2.a: go-gpt2
 	$(MAKE) -C go-gpt2 libgpt2.a
 
 whisper.cpp:
-	git clone https://github.com/ggerganov/whisper.cpp.git
-	cd whisper.cpp && git checkout -b build $(WHISPER_CPP_VERSION) && git submodule update --init --recursive --depth 1
+	cd whisper.cpp
 	@find ./whisper.cpp -type f -name "*.c" -exec sed -i'' -e 's/ggml_/ggml_whisper_/g' {} +
 	@find ./whisper.cpp -type f -name "*.cpp" -exec sed -i'' -e 's/ggml_/ggml_whisper_/g' {} +
 	@find ./whisper.cpp -type f -name "*.h" -exec sed -i'' -e 's/ggml_/ggml_whisper_/g' {} +
@@ -143,8 +125,7 @@ whisper.cpp/libwhisper.a: whisper.cpp
 	cd whisper.cpp && make libwhisper.a
 
 go-llama:
-	git clone --recurse-submodules https://github.com/go-skynet/go-llama.cpp go-llama
-	cd go-llama && git checkout -b build $(GOLLAMA_VERSION) && git submodule update --init --recursive --depth 1
+	cd go-llama
 
 go-llama/libbinding.a: go-llama 
 	$(MAKE) -C go-llama BUILD_TYPE=$(BUILD_TYPE) libbinding.a
