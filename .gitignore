@@ -1,10 +1,10 @@
 # go-llama build artifacts
-go-llama
-gpt4all
-go-stable-diffusion
-go-gpt2
-go-rwkv
-whisper.cpp
+# go-llama
+# gpt4all
+# go-stable-diffusion
+# go-gpt2
+# go-rwkv
+# whisper.cpp
 
 # LocalAI build binary
 LocalAI

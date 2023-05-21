@@ -1,0 +1,24 @@
+[submodule "go-bert"]
+	path = go-bert
+	url = https://github.com/go-skynet/go-bert.cpp
+[submodule "go-stable-diffusion"]
+	path = go-stable-diffusion
+	url = https://github.com/mudler/go-stable-diffusion
+[submodule "gpt4all"]
+	path = gpt4all
+	url = https://github.com/nomic-ai/gpt4all
+[submodule "go-rwkv"]
+	path = go-rwkv
+	url = https://github.com/donomii/go-rwkv.cpp
+[submodule "go-gpt2"]
+	path = go-gpt2
+	url = https://github.com/go-skynet/go-gpt2.cpp
+[submodule "bloomz"]
+	path = bloomz
+	url = https://github.com/go-skynet/bloomz.cpp
+[submodule "whisper.cpp"]
+	path = whisper.cpp
+	url = https://github.com/ggerganov/whisper.cpp.git
+[submodule "go-llama"]
+	path = go-llama
+	url = https://github.com/go-skynet/go-llama.cpp
