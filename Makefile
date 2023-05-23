@@ -37,7 +37,6 @@ all: help
 
 ## GPT4ALL
 gpt4all:
-	cd gpt4all
 	# This is hackish, but needed as both go-llama and go-gpt4allj have their own version of ggml..
 	@find ./gpt4all -type f -name "*.c" -exec sed -i'' -e 's/ggml_/ggml_gptj_/g' {} +
 	@find ./gpt4all -type f -name "*.cpp" -exec sed -i'' -e 's/ggml_/ggml_gptj_/g' {} +
@@ -58,7 +57,6 @@ gpt4all:
 
 ## BERT embeddings
 go-bert:
-	cd go-bert
 	@find ./go-bert -type f -name "*.c" -exec sed -i'' -e 's/ggml_/ggml_bert_/g' {} +
 	@find ./go-bert -type f -name "*.cpp" -exec sed -i'' -e 's/ggml_/ggml_bert_/g' {} +
 	@find ./go-bert -type f -name "*.h" -exec sed -i'' -e 's/ggml_/ggml_bert_/g' {} +
@@ -72,7 +70,6 @@ go-stable-diffusion/libstablediffusion.a:
 
 ## RWKV
 go-rwkv:
-	cd go-rwkv
 	@find ./go-rwkv -type f -name "*.c" -exec sed -i'' -e 's/ggml_/ggml_rwkv_/g' {} +
 	@find ./go-rwkv -type f -name "*.cpp" -exec sed -i'' -e 's/ggml_/ggml_rwkv_/g' {} +
 	@find ./go-rwkv -type f -name "*.h" -exec sed -i'' -e 's/ggml_/ggml_rwkv_/g' {} +
@@ -99,7 +96,6 @@ gpt4all/gpt4all-bindings/golang/libgpt4all.a: gpt4all
 
 ## CEREBRAS GPT
 go-gpt2: 
-	cd go-gpt2
 	# This is hackish, but needed as both go-llama and go-gpt4allj have their own version of ggml..
 	@find ./go-gpt2 -type f -name "*.c" -exec sed -i'' -e 's/ggml_/ggml_gpt2_/g' {} +
 	@find ./go-gpt2 -type f -name "*.cpp" -exec sed -i'' -e 's/ggml_/ggml_gpt2_/g' {} +
@@ -116,7 +112,6 @@ go-gpt2/libgpt2.a: go-gpt2
 	$(MAKE) -C go-gpt2 libgpt2.a
 
 whisper.cpp:
-	cd whisper.cpp
 	@find ./whisper.cpp -type f -name "*.c" -exec sed -i'' -e 's/ggml_/ggml_whisper_/g' {} +
 	@find ./whisper.cpp -type f -name "*.cpp" -exec sed -i'' -e 's/ggml_/ggml_whisper_/g' {} +
 	@find ./whisper.cpp -type f -name "*.h" -exec sed -i'' -e 's/ggml_/ggml_whisper_/g' {} +
